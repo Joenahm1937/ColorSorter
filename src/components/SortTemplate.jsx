@@ -36,7 +36,7 @@ const AddIcon = ({ setBars, setSortReady, maxBars, setInvalid }) => (
       var num = document.getElementById("numBars").value;
       if (parseInt(num) && num >= 0 && num <= maxBars) {
         setInvalid(false);
-        setBars(trupleGenerator(parseInt(num)));
+        setBars(trupleGenerator(parseInt(num)).sort((a, b) => a[0] - b[0]));
         setSortReady(true);
       } else {
         setInvalid(true);
@@ -53,10 +53,14 @@ const AddIcon = ({ setBars, setSortReady, maxBars, setInvalid }) => (
 );
 
 const SortTemplate = ({ algo }) => {
-  const maxBars = 100;
-  const [bars, setBars] = useState([]);
+  const maxBars = 200;
+  const rand = () => Math.floor(Math.random() * 255);
+  const [bars, setBars] = useState(
+    [...Array(20)].fill([rand(), rand(), rand()])
+  );
   const [sortReady, setSortReady] = useState(false);
   const [invalid, setInvalid] = useState(false);
+  console.log(bars);
   return (
     <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
       <h1 className="font-black flex justify-center items-center">
