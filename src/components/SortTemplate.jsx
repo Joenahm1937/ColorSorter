@@ -59,34 +59,36 @@ const SortTemplate = ({ algo }) => {
   const [invalid, setInvalid] = useState(false);
   const [numBars, setNumBars] = useState();
   const [play, setPlay] = useState(false);
+  const [end, setEnd] = useState(false);
   const [bars, setBars] = useState([]);
   const [index, setIndex] = useState({ i: 0, j: 0 });
 
-  console.log(index.i, index.j);
-
   useEffect(() => {
-    if (numBars && !play) {
+    if (end) {
+      return;
+    }
+    if (numBars && !play && !end) {
       setBars(trupleGenerator(numBars));
     }
     if (play) {
-      if (index.i === numBars) {
+      if (index.i === numBars - 1) {
         console.log("sorted");
-        setPlay(false);
+        setEnd(true);
       } else {
         const timer = setInterval(() => {
           var copy = [...bars];
-          if (copy[index.j][0] > copy[index.j + 1][0]) {
-            var temp = copy[index.j];
-            copy[index.j] = copy[index.j + 1];
-            copy[index.j + 1] = temp;
-          }
           setBars(copy);
           if (index.j === numBars - index.i - 1) {
             setIndex({ i: index.i + 1, j: 0 });
           } else {
+            if (copy[index.j][0] > copy[index.j + 1][0]) {
+              var temp = copy[index.j];
+              copy[index.j] = copy[index.j + 1];
+              copy[index.j + 1] = temp;
+            }
             setIndex({ i: index.i, j: index.j + 1 });
           }
-        }, 1000);
+        }, 100);
         return () => clearInterval(timer);
       }
     }
