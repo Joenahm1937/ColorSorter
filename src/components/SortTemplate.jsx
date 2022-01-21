@@ -1,14 +1,35 @@
-import React from "react";
+import { useState } from "react";
 import SortPage from "../components/SortPage";
+import { trupleGenerator } from "../helpers/algorithms";
 
 const SortTemplate = ({ algo }) => {
+  const maxBars = 100;
+  const [bars, setBars] = useState([]);
   return (
     <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
-      <h1 className="text-7xl uppercase font-black flex justify-center items-center">
-        <div className="pr-6">{`${algo.toUpperCase()} Sort`}</div>
+      <h1 className="font-black flex justify-center items-center">
+        <div className="pr-6 text-7xl uppercase ">{`${algo} Sort`}</div>
+        <div className="flex flex-col m-4">
+          <label>Enter Number of bars:</label>
+          <input
+            type="text"
+            id="numBars"
+            name="numBars"
+            min="1"
+            max="50"
+            placeholder={`Max: ${maxBars}`}
+          />
+        </div>
         <svg
           className="w-12 h-12 bg-red-400 rounded-full cursor-pointer"
-          onClick={() => console.log("clicked")}
+          onClick={() => {
+            var num = document.getElementById("numBars").value;
+            if (parseInt(num) && num >= 0 && num <= maxBars) {
+              setBars(trupleGenerator(parseInt(num)));
+            } else {
+              alert("Please Enter a Valid Number");
+            }
+          }}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -28,7 +49,11 @@ const SortTemplate = ({ algo }) => {
           />
         </svg>
       </h1>
-      <SortPage />
+      <SortPage bars={bars} />
+      <div className="h-1/3 font-black flex justify-center items-center">
+        <div className="pr-6 bg-yellow-200 m-3">Video Here</div>
+        <div className="pr-6 bg-yellow-200 m-3">Description Here</div>
+      </div>
     </div>
   );
 };
