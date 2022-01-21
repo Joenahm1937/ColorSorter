@@ -1,14 +1,14 @@
 import { useState } from "react";
 import SortPage from "../components/SortPage";
-import { trupleGenerator } from "../helpers/algorithms";
 
-const StartIcon = () => (
+const StartIcon = ({ play, setPlay }) => (
   <svg
     className="w-12 h-12 bg-blue-400 rounded-full cursor-pointer"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
+    onClick={() => setPlay(!play)}
   >
     <path
       strokeLinecap="round"
@@ -25,7 +25,13 @@ const StartIcon = () => (
   </svg>
 );
 
-const AddIcon = ({ setBars, setSortReady, maxBars, setInvalid }) => (
+const AddIcon = ({
+  setSortReady,
+  maxBars,
+  setInvalid,
+  setNumBars,
+  setPlay,
+}) => (
   <svg
     className="w-12 h-12 bg-red-400 rounded-full cursor-pointer"
     fill="none"
@@ -36,7 +42,8 @@ const AddIcon = ({ setBars, setSortReady, maxBars, setInvalid }) => (
       var num = document.getElementById("numBars").value;
       if (parseInt(num) && num >= 0 && num <= maxBars) {
         setInvalid(false);
-        setBars(trupleGenerator(parseInt(num)).sort((a, b) => a[0] - b[0]));
+        setPlay(true);
+        setNumBars(parseInt(num));
         setSortReady(true);
       } else {
         setInvalid(true);
@@ -54,13 +61,10 @@ const AddIcon = ({ setBars, setSortReady, maxBars, setInvalid }) => (
 
 const SortTemplate = ({ algo }) => {
   const maxBars = 200;
-  const rand = () => Math.floor(Math.random() * 255);
-  const [bars, setBars] = useState(
-    [...Array(20)].fill([rand(), rand(), rand()])
-  );
   const [sortReady, setSortReady] = useState(false);
   const [invalid, setInvalid] = useState(false);
-  console.log(bars);
+  const [numBars, setNumBars] = useState();
+  const [play, setPlay] = useState(false);
   return (
     <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
       <h1 className="font-black flex justify-center items-center">
@@ -78,18 +82,19 @@ const SortTemplate = ({ algo }) => {
         </div>
         <div className="w-20 h-20 flex items-center">
           {sortReady ? (
-            <StartIcon />
+            <StartIcon play={play} setPlay={setPlay} />
           ) : (
             <AddIcon
-              setBars={setBars}
+              setNumBars={setNumBars}
               setSortReady={setSortReady}
               maxBars={maxBars}
               setInvalid={setInvalid}
+              setPlay={setPlay}
             />
           )}
         </div>
       </h1>
-      <SortPage bars={bars} invalid={invalid} setInvalid={setInvalid} />
+      <SortPage invalid={invalid} numBars={numBars} play={play} />
       <div className="h-1/3 font-black flex justify-center items-center">
         <div className="pr-6 bg-yellow-200 m-3">Video Here</div>
         <div className="pr-6 bg-yellow-200 m-3">Description Here</div>

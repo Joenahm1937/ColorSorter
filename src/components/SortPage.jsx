@@ -1,4 +1,5 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { trupleGenerator } from "../helpers/algorithms";
 
 const Alert = () => {
   return (
@@ -19,7 +20,16 @@ const Bar = ({ color }) => {
   );
 };
 
-const SortPage = ({ bars, invalid }) => {
+const SortPage = ({ numBars, invalid, play }) => {
+  const [bars, setBars] = useState([]);
+  const rand = () => Math.floor(Math.random() * 255);
+  useEffect(() => {
+    if (numBars) {
+      setBars(trupleGenerator(numBars));
+    } else {
+      setBars([...Array(20)].fill([rand(), rand(), rand()]));
+    }
+  }, [numBars]);
   return (
     <div className="w-full bg-white flex-1 flex justify-center">
       {invalid ? (
