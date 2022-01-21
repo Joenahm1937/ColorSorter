@@ -1,11 +1,8 @@
 import React from "react";
+import SortTemplate from "../components/SortTemplate";
 
 const Merge = () => {
-  return (
-    <div className="h-screen flex justify-center items-center bg-yellow-300">
-      <h1 className="text-9xl uppercase font-black">Merge</h1>
-    </div>
-  );
+  return <SortTemplate algo={"merge"} />;
 };
 
 export default Merge;
