@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SortPage from "../components/SortPage";
+import { trupleGenerator } from "../helpers/algorithms";
 
 const StartIcon = ({ play, setPlay }) => (
   <svg
@@ -25,13 +26,7 @@ const StartIcon = ({ play, setPlay }) => (
   </svg>
 );
 
-const AddIcon = ({
-  setSortReady,
-  maxBars,
-  setInvalid,
-  setNumBars,
-  setPlay,
-}) => (
+const AddIcon = ({ setSortReady, maxBars, setInvalid, setNumBars }) => (
   <svg
     className="w-12 h-12 bg-red-400 rounded-full cursor-pointer"
     fill="none"
@@ -42,7 +37,6 @@ const AddIcon = ({
       var num = document.getElementById("numBars").value;
       if (parseInt(num) && num >= 0 && num <= maxBars) {
         setInvalid(false);
-        setPlay(true);
         setNumBars(parseInt(num));
         setSortReady(true);
       } else {
@@ -65,6 +59,39 @@ const SortTemplate = ({ algo }) => {
   const [invalid, setInvalid] = useState(false);
   const [numBars, setNumBars] = useState();
   const [play, setPlay] = useState(false);
+  const [bars, setBars] = useState([]);
+  const [index, setIndex] = useState({ i: 0, j: 0 });
+
+  console.log(index.i, index.j);
+
+  useEffect(() => {
+    if (numBars && !play) {
+      setBars(trupleGenerator(numBars));
+    }
+    if (play) {
+      if (index.i === numBars) {
+        console.log("sorted");
+        setPlay(false);
+      } else {
+        const timer = setInterval(() => {
+          var copy = [...bars];
+          if (copy[index.j][0] > copy[index.j + 1][0]) {
+            var temp = copy[index.j];
+            copy[index.j] = copy[index.j + 1];
+            copy[index.j + 1] = temp;
+          }
+          setBars(copy);
+          if (index.j === numBars - index.i - 1) {
+            setIndex({ i: index.i + 1, j: 0 });
+          } else {
+            setIndex({ i: index.i, j: index.j + 1 });
+          }
+        }, 1000);
+        return () => clearInterval(timer);
+      }
+    }
+  }, [play, numBars, index]);
+
   return (
     <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
       <h1 className="font-black flex justify-center items-center">
@@ -94,7 +121,7 @@ const SortTemplate = ({ algo }) => {
           )}
         </div>
       </h1>
-      <SortPage invalid={invalid} numBars={numBars} play={play} />
+      <SortPage invalid={invalid} bars={bars} />
       <div className="h-1/3 font-black flex justify-center items-center">
         <div className="pr-6 bg-yellow-200 m-3">Video Here</div>
         <div className="pr-6 bg-yellow-200 m-3">Description Here</div>
