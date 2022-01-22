@@ -124,6 +124,7 @@ const Fields = ({
             <option value="Red">Red</option>
             <option value="Green">Green</option>
             <option value="Blue">Blue</option>
+            <option value="Height">Height</option>
           </select>
         ) : !speed ? (
           <select id="speeds" name="speeds">
