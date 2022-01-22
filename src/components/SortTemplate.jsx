@@ -5,7 +5,6 @@ import Fields from "./Fields";
 
 const SortTemplate = ({ algo }) => {
   const maxBars = 200;
-  const [sortReady, setSortReady] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const [numBars, setNumBars] = useState();
   const [criteria, setCriteria] = useState();
@@ -14,6 +13,9 @@ const SortTemplate = ({ algo }) => {
   const [end, setEnd] = useState(false);
   const [bars, setBars] = useState([]);
   const [index, setIndex] = useState({ i: 0, j: 0 });
+
+  var colorsMap = { Red: 0, Green: 1, Blue: 2 };
+  var speedsMap = { slow: 1000, mild: 500, fast: 50, vfast: 20, extreme: 5 };
 
   useEffect(() => {
     if (end) {
@@ -33,14 +35,17 @@ const SortTemplate = ({ algo }) => {
           if (index.j === numBars - index.i - 1) {
             setIndex({ i: index.i + 1, j: 0 });
           } else {
-            if (copy[index.j][0] > copy[index.j + 1][0]) {
+            if (
+              copy[index.j][colorsMap[criteria]] >
+              copy[index.j + 1][colorsMap[criteria]]
+            ) {
               var temp = copy[index.j];
               copy[index.j] = copy[index.j + 1];
               copy[index.j + 1] = temp;
             }
             setIndex({ i: index.i, j: index.j + 1 });
           }
-        }, 100);
+        }, speedsMap[speed]);
         return () => clearInterval(timer);
       }
     }
@@ -51,8 +56,6 @@ const SortTemplate = ({ algo }) => {
       <h1 className="font-black flex justify-center items-center">
         <div className="pr-6 text-7xl uppercase ">{`${algo} Sort`}</div>
         <Fields
-          sortReady={sortReady}
-          setSortReady={setSortReady}
           numBars={numBars}
           maxBars={maxBars}
           setNumBars={setNumBars}

@@ -22,14 +22,16 @@ const StartIcon = ({ play, setPlay }) => (
   </svg>
 );
 
-const FastIcon = () => (
+const FastIcon = ({ setSpeed }) => (
   <svg
     className="w-12 h-12 bg-red-400 rounded-full cursor-pointer"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
-    onClick={() => {}}
+    onClick={() => {
+      setSpeed(document.getElementById("speeds").value);
+    }}
   >
     <path
       strokeLinecap="round"
@@ -40,14 +42,16 @@ const FastIcon = () => (
   </svg>
 );
 
-const colorIcon = () => (
+const ColorIcon = ({ setCriteria }) => (
   <svg
-    className="w-12 h-12 bg-red-400 rounded-full cursor-pointer"
+    className="w-12 h-12 bg-green-400 rounded-half cursor-pointer"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
-    onClick={() => {}}
+    onClick={() => {
+      setCriteria(document.getElementById("colors").value);
+    }}
   >
     <path
       strokeLinecap="round"
@@ -58,7 +62,7 @@ const colorIcon = () => (
   </svg>
 );
 
-const AddIcon = ({ setInvalid, setNumBars, setSortReady, maxBars }) => (
+const AddIcon = ({ setInvalid, setNumBars, maxBars }) => (
   <svg
     className="w-12 h-12 bg-red-400 rounded-full cursor-pointer"
     fill="none"
@@ -70,7 +74,6 @@ const AddIcon = ({ setInvalid, setNumBars, setSortReady, maxBars }) => (
       if (parseInt(num) && num >= 0 && num <= maxBars) {
         setInvalid(false);
         setNumBars(parseInt(num));
-        setSortReady(true);
       } else {
         setInvalid(true);
       }
@@ -86,8 +89,6 @@ const AddIcon = ({ setInvalid, setNumBars, setSortReady, maxBars }) => (
 );
 
 const Fields = ({
-  sortReady,
-  setSortReady,
   numBars,
   maxBars,
   setNumBars,
@@ -100,32 +101,72 @@ const Fields = ({
   setSpeed,
 }) => {
   return (
-    <>
+    <div className="flex flex-row w-80">
       <div className="flex flex-col m-4">
-        <label>Enter Number of bars:</label>
-        <input
-          type="text"
-          id="numBars"
-          name="numBars"
-          min="1"
-          max="50"
-          placeholder={`Max: ${maxBars}`}
-        />
+        <label>
+          {!numBars
+            ? "Enter Number of bars:"
+            : !criteria
+            ? "Enter Sorting Criteria"
+            : !speed
+            ? "Enter speed"
+            : "Start Sorting"}
+        </label>
+        {!numBars ? (
+          <input
+            type="text"
+            id="numBars"
+            name="numBars"
+            placeholder={`Max: ${maxBars}`}
+          />
+        ) : !criteria ? (
+          <select id="colors" name="colors">
+            <option value="Red">Red</option>
+            <option value="Green">Green</option>
+            <option value="Blue">Blue</option>
+          </select>
+        ) : !speed ? (
+          <select id="speeds" name="speeds">
+            <option value="slow">Slow</option>
+            <option value="mild">Mild</option>
+            <option value="fast">Fast</option>
+            <option value="vfast">Very Fast</option>
+            <option value="extreme">Extreme</option>
+          </select>
+        ) : (
+          <svg
+            className="w-6 h-6 self-center"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            />
+          </svg>
+        )}
       </div>
       <div className="w-20 h-20 flex items-center">
-        {numBars ? (
-          <StartIcon play={play} setPlay={setPlay} />
-        ) : (
+        {!numBars ? (
           <AddIcon
             setNumBars={setNumBars}
-            setSortReady={setSortReady}
             maxBars={maxBars}
             setInvalid={setInvalid}
             setPlay={setPlay}
           />
+        ) : !criteria ? (
+          <ColorIcon setCriteria={setCriteria} />
+        ) : !speed ? (
+          <FastIcon setSpeed={setSpeed} />
+        ) : (
+          <StartIcon play={play} setPlay={setPlay} />
         )}
       </div>
-    </>
+    </div>
   );
 };
 
