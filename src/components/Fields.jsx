@@ -1,3 +1,37 @@
+const RestartIcon = ({
+  setBars,
+  setNumBars,
+  setPlay,
+  setEnd,
+  setSpeed,
+  setCriteria,
+  setIndex,
+}) => (
+  <svg
+    onClick={() => {
+      setBars([]);
+      setNumBars(null);
+      setPlay(false);
+      setEnd(false);
+      setSpeed(null);
+      setCriteria(null);
+      setIndex({ i: 0, j: 0 });
+    }}
+    className="w-12 h-12 bg-blue-400 rounded-full cursor-pointer p-2"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+    />
+  </svg>
+);
+
 const StartIcon = ({ play, setPlay }) => (
   <svg
     className="w-12 h-12 bg-blue-400 rounded-full cursor-pointer"
@@ -18,6 +52,24 @@ const StartIcon = ({ play, setPlay }) => (
       strokeLinejoin="round"
       strokeWidth={2}
       d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+);
+
+const PauseIcon = ({ play, setPlay }) => (
+  <svg
+    className="w-12 h-12 bg-blue-400 rounded-full cursor-pointer"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    onClick={() => setPlay(!play)}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
     />
   </svg>
 );
@@ -99,72 +151,97 @@ const Fields = ({
   setCriteria,
   speed,
   setSpeed,
+  end,
+  setBars,
+  setEnd,
+  setIndex,
 }) => {
   return (
     <div className="flex flex-row w-80">
-      <div className="flex flex-col m-4">
-        <label>
-          {!numBars
-            ? "Enter Number of bars:"
-            : !criteria
-            ? "Enter Sorting Criteria"
-            : !speed
-            ? "Enter speed"
-            : "Start Sorting"}
-        </label>
-        {!numBars ? (
-          <input
-            type="text"
-            id="numBars"
-            name="numBars"
-            placeholder={`Max: ${maxBars}`}
-          />
-        ) : !criteria ? (
-          <select id="colors" name="colors">
-            <option value="Red">Red</option>
-            <option value="Green">Green</option>
-            <option value="Blue">Blue</option>
-            <option value="Height">Height</option>
-          </select>
-        ) : !speed ? (
-          <select id="speeds" name="speeds">
-            <option value="slow">Slow</option>
-            <option value="mild">Mild</option>
-            <option value="fast">Fast</option>
-            <option value="vfast">Very Fast</option>
-            <option value="extreme">Extreme</option>
-          </select>
-        ) : (
-          <svg
-            className="w-6 h-6 self-center"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
+      {!end ? (
+        <div className="flex flex-col m-4">
+          <label>
+            {!numBars
+              ? "Enter Number of bars:"
+              : !criteria
+              ? "Enter Sorting Criteria"
+              : !speed
+              ? "Enter speed"
+              : "Start Sorting"}
+          </label>
+          {!numBars ? (
+            <input
+              type="text"
+              id="numBars"
+              name="numBars"
+              placeholder={`Max: ${maxBars}`}
             />
-          </svg>
-        )}
-      </div>
+          ) : !criteria ? (
+            <select id="colors" name="colors">
+              <option value="Red">Red</option>
+              <option value="Green">Green</option>
+              <option value="Blue">Blue</option>
+              <option value="Height">Height</option>
+            </select>
+          ) : !speed ? (
+            <select id="speeds" name="speeds">
+              <option value="slow">Slow</option>
+              <option value="mild">Mild</option>
+              <option value="fast">Fast</option>
+              <option value="vfast">Very Fast</option>
+              <option value="extreme">Extreme</option>
+            </select>
+          ) : (
+            <svg
+              className="w-6 h-6 self-center"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col m-4 justify-center">
+          <label>Restart?</label>
+        </div>
+      )}
+
       <div className="w-20 h-20 flex items-center">
-        {!numBars ? (
-          <AddIcon
-            setNumBars={setNumBars}
-            maxBars={maxBars}
-            setInvalid={setInvalid}
-            setPlay={setPlay}
-          />
-        ) : !criteria ? (
-          <ColorIcon setCriteria={setCriteria} />
-        ) : !speed ? (
-          <FastIcon setSpeed={setSpeed} />
+        {!end ? (
+          !numBars ? (
+            <AddIcon
+              setNumBars={setNumBars}
+              maxBars={maxBars}
+              setInvalid={setInvalid}
+              setPlay={setPlay}
+            />
+          ) : !criteria ? (
+            <ColorIcon setCriteria={setCriteria} />
+          ) : !speed ? (
+            <FastIcon setSpeed={setSpeed} />
+          ) : !play ? (
+            <StartIcon play={play} setPlay={setPlay} />
+          ) : (
+            <PauseIcon play={play} setPlay={setPlay} />
+          )
         ) : (
-          <StartIcon play={play} setPlay={setPlay} />
+          <RestartIcon
+            setBars={setBars}
+            setNumBars={setNumBars}
+            setPlay={setPlay}
+            setEnd={setEnd}
+            setSpeed={setSpeed}
+            setCriteria={setCriteria}
+            setIndex={setIndex}
+          />
         )}
       </div>
     </div>

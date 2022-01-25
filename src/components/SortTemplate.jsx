@@ -21,32 +21,35 @@ const SortTemplate = ({ algo }) => {
     if (end) {
       return;
     }
-    if (numBars && !play && !end) {
+    if (numBars && !play && !end && !index.j) {
       setBars(trupleGenerator(numBars));
     }
-    if (play) {
-      if (index.i === numBars - 1) {
-        setEnd(true);
-      } else {
-        const timer = setInterval(() => {
-          var copy = [...bars];
-          setBars(copy);
-          if (index.j === numBars - index.i - 1) {
-            setIndex({ i: index.i + 1, j: 0 });
-          } else {
-            if (
-              copy[index.j][colorsMap[criteria]] >
-              copy[index.j + 1][colorsMap[criteria]]
-            ) {
-              var temp = copy[index.j];
-              copy[index.j] = copy[index.j + 1];
-              copy[index.j + 1] = temp;
+    if (algo === "bubble") {
+      if (play) {
+        if (index.i === numBars - 1) {
+          setEnd(true);
+        } else {
+          const timer = setInterval(() => {
+            var copy = [...bars];
+            setBars(copy);
+            if (index.j === numBars - index.i - 1) {
+              setIndex({ i: index.i + 1, j: 0 });
+            } else {
+              if (
+                copy[index.j][colorsMap[criteria]] >
+                copy[index.j + 1][colorsMap[criteria]]
+              ) {
+                var temp = copy[index.j];
+                copy[index.j] = copy[index.j + 1];
+                copy[index.j + 1] = temp;
+              }
+              setIndex({ i: index.i, j: index.j + 1 });
             }
-            setIndex({ i: index.i, j: index.j + 1 });
-          }
-        }, speedsMap[speed]);
-        return () => clearInterval(timer);
+          }, speedsMap[speed]);
+          return () => clearInterval(timer);
+        }
       }
+    } else if (algo === "merge") {
     }
   }, [play, numBars, index]);
 
@@ -54,49 +57,22 @@ const SortTemplate = ({ algo }) => {
     <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
       <h1 className="font-black flex justify-center items-center">
         <div className="pr-6 text-7xl uppercase ">{`${algo} Sort`}</div>
-        {!end ? (
-          <Fields
-            numBars={numBars}
-            maxBars={maxBars}
-            setNumBars={setNumBars}
-            setInvalid={setInvalid}
-            play={play}
-            setPlay={setPlay}
-            criteria={criteria}
-            setCriteria={setCriteria}
-            speed={speed}
-            setSpeed={setSpeed}
-          />
-        ) : (
-          <div
-            className="flex justify-center items-center cursor-pointer"
-            onClick={() => {
-              setBars([]);
-              setNumBars(null);
-              setPlay(false);
-              setEnd(false);
-              setSpeed(null);
-              setCriteria(null);
-              setIndex({ i: 0, j: 0 });
-            }}
-          >
-            Restart
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-          </div>
-        )}
+        <Fields
+          numBars={numBars}
+          maxBars={maxBars}
+          setNumBars={setNumBars}
+          setInvalid={setInvalid}
+          play={play}
+          setPlay={setPlay}
+          criteria={criteria}
+          setCriteria={setCriteria}
+          speed={speed}
+          setSpeed={setSpeed}
+          end={end}
+          setBars={setBars}
+          setEnd={setEnd}
+          setIndex={setIndex}
+        />
       </h1>
       <SortPage invalid={invalid} bars={bars} />
       <div className="h-1/3 font-black flex justify-center items-center">
