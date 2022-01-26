@@ -32,7 +32,6 @@ const SortTemplate = ({ algo }) => {
         } else {
           const timer = setInterval(() => {
             var copy = [...bars];
-            setBars(copy);
             if (index.j === numBars - index.i - 1) {
               setIndex({ i: index.i + 1, j: 0 });
             } else {
@@ -43,6 +42,7 @@ const SortTemplate = ({ algo }) => {
                 var temp = copy[index.j];
                 copy[index.j] = copy[index.j + 1];
                 copy[index.j + 1] = temp;
+                setBars(copy);
               }
               setIndex({ i: index.i, j: index.j + 1 });
             }
@@ -60,8 +60,8 @@ const SortTemplate = ({ algo }) => {
         } else {
           const timer = setInterval(() => {
             var copy = [...bars];
-            setBars(copy);
             copy[animations[index.i][0]] = animations[index.i][1];
+            setBars(copy);
             setIndex({ i: index.i + 1, j: 0 });
           }, speedsMap[speed]);
           return () => clearInterval(timer);
