@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import SortPage from "../components/SortPage";
-import { trupleGenerator } from "../helpers/algorithms";
+import { trupleGenerator, mergeAnimate } from "../helpers/algorithms";
 import Fields from "./Fields";
 
 const SortTemplate = ({ algo }) => {
@@ -13,6 +13,7 @@ const SortTemplate = ({ algo }) => {
   const [end, setEnd] = useState(false);
   const [bars, setBars] = useState([]);
   const [index, setIndex] = useState({ i: 0, j: 0 });
+  const [animations, setAnimations] = useState();
 
   var colorsMap = { Red: 0, Green: 1, Blue: 2, Height: 3 };
   var speedsMap = { slow: 1000, mild: 500, fast: 50, vfast: 20, extreme: 5 };
@@ -21,7 +22,7 @@ const SortTemplate = ({ algo }) => {
     if (end) {
       return;
     }
-    if (numBars && !play && !end && !index.j) {
+    if (numBars && !bars.length && !play && !end && !index.j) {
       setBars(trupleGenerator(numBars));
     }
     if (algo === "bubble") {
@@ -50,8 +51,24 @@ const SortTemplate = ({ algo }) => {
         }
       }
     } else if (algo === "merge") {
+      if (bars.length && !speed) {
+        setAnimations(mergeAnimate([...bars], colorsMap[criteria]));
+      }
+      if (play) {
+        if (index.i === animations.length) {
+          setEnd(true);
+        } else {
+          const timer = setInterval(() => {
+            var copy = [...bars];
+            setBars(copy);
+            copy[animations[index.i][0]] = animations[index.i][1];
+            setIndex({ i: index.i + 1, j: 0 });
+          }, speedsMap[speed]);
+          return () => clearInterval(timer);
+        }
+      }
     }
-  }, [play, numBars, index]);
+  }, [play, numBars, index, criteria]);
 
   return (
     <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
