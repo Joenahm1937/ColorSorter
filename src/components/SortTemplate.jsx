@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import SortPage from "../components/SortPage";
-import { trupleGenerator, mergeAnimate } from "../helpers/algorithms";
+import {
+  trupleGenerator,
+  mergeAnimate,
+  quickAnimate,
+} from "../helpers/algorithms";
 import Fields from "./Fields";
 
 const SortTemplate = ({ algo }) => {
@@ -63,6 +67,24 @@ const SortTemplate = ({ algo }) => {
             copy[animations[index.i][0]] = animations[index.i][1];
             setBars(copy);
             setIndex({ i: index.i + 1, j: 0 });
+          }, speedsMap[speed]);
+          return () => clearInterval(timer);
+        }
+      }
+    } else if (algo === "quick") {
+      if (bars.length && !speed) {
+        setAnimations(quickAnimate([...bars], colorsMap[criteria]));
+      }
+      if (play) {
+        if (index.i >= animations.length) {
+          setEnd(true);
+        } else {
+          const timer = setInterval(() => {
+            var copy = [...bars];
+            copy[animations[index.i][0]] = animations[index.i][1];
+            copy[animations[index.i + 1][0]] = animations[index.i + 1][1];
+            setBars(copy);
+            setIndex({ i: index.i + 2, j: 0 });
           }, speedsMap[speed]);
           return () => clearInterval(timer);
         }
