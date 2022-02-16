@@ -112,7 +112,7 @@ const SortTemplate = ({ algo }) => {
   }, [play, numBars, index, criteria]);
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-yellow-300">
+    <div className="h-screen flex flex-col justify-center items-center">
       <h1 className="font-black flex justify-center items-center">
         <div className="pr-6 text-7xl uppercase ">{`${algo} Sort`}</div>
         <Fields
@@ -133,10 +133,6 @@ const SortTemplate = ({ algo }) => {
         />
       </h1>
       <SortPage invalid={invalid} bars={bars} />
-      <div className="h-1/3 font-black flex justify-center items-center">
-        <div className="pr-6 bg-yellow-200 m-3">Video Here</div>
-        <div className="pr-6 bg-yellow-200 m-3">Description Here</div>
-      </div>
     </div>
   );
 };
