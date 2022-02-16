@@ -4,6 +4,7 @@ import {
   trupleGenerator,
   mergeAnimate,
   quickAnimate,
+  heapAnimate,
 } from "../helpers/algorithms";
 import Fields from "./Fields";
 
@@ -74,6 +75,24 @@ const SortTemplate = ({ algo }) => {
     } else if (algo === "quick") {
       if (bars.length && !speed) {
         setAnimations(quickAnimate([...bars], colorsMap[criteria]));
+      }
+      if (play) {
+        if (index.i >= animations.length) {
+          setEnd(true);
+        } else {
+          const timer = setInterval(() => {
+            var copy = [...bars];
+            copy[animations[index.i][0]] = animations[index.i][1];
+            copy[animations[index.i + 1][0]] = animations[index.i + 1][1];
+            setBars(copy);
+            setIndex({ i: index.i + 2, j: 0 });
+          }, speedsMap[speed]);
+          return () => clearInterval(timer);
+        }
+      }
+    } else if (algo === "heap") {
+      if (bars.length && !speed) {
+        setAnimations(heapAnimate([...bars], colorsMap[criteria]));
       }
       if (play) {
         if (index.i >= animations.length) {

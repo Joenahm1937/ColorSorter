@@ -23,6 +23,9 @@ const Dropdown = ({ isOpen, toggle }) => {
       <Link className="p-4" to="/quick">
         Quick
       </Link>
+      <Link className="p-4" to="/heap">
+        Heap
+      </Link>
     </div>
   );
 };

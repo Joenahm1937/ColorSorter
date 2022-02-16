@@ -7,6 +7,47 @@ const trupleGenerator = (numBars) => {
   return res;
 };
 
+const heapAnimate = (arr, criteria) => {
+  if (arr.length <= 1) return arr;
+  const animations = [];
+  heapSort(arr, animations, criteria);
+  return animations;
+};
+
+const heapSort = (arr, animations, criteria) => {
+  const n = arr.length;
+
+  for (let i = Math.floor((n - 1) / 2); i >= 0; i--) {
+    heapify(arr, n, i, animations, criteria);
+  }
+
+  for (let i = n - 1; i > 0; i--) {
+    animations.push([0, arr[i]]);
+    animations.push([i, arr[0]]);
+    [arr[0], arr[i]] = [arr[i], arr[0]];
+    heapify(arr, i, 0, animations, criteria);
+  }
+};
+
+const heapify = (arr, n, i, animations, criteria) => {
+  var largest = i;
+  var l = 2 * i + 1;
+  var r = 2 * i + 2;
+
+  if (l < n && arr[l][criteria] > arr[i][criteria]) {
+    largest = l;
+  }
+  if (r < n && arr[r][criteria] > arr[largest][criteria]) {
+    largest = r;
+  }
+  if (largest !== i) {
+    animations.push([i, arr[largest]]);
+    animations.push([largest, arr[i]]);
+    [arr[i], arr[largest]] = [arr[largest], arr[i]];
+    heapify(arr, n, largest, animations, criteria);
+  }
+};
+
 const quickAnimate = (arr, criteria) => {
   if (arr.length <= 1) return arr;
   const animations = [];
@@ -77,4 +118,4 @@ const merge = (arr, start, mid, end, aux, animations, criteria) => {
   }
 };
 
-export { trupleGenerator, mergeAnimate, quickAnimate };
+export { trupleGenerator, mergeAnimate, quickAnimate, heapAnimate };
