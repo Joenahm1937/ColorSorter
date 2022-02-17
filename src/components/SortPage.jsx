@@ -25,12 +25,12 @@ const Bar = ({ color, height, bar }) => {
         // 5px -5px 0px rgb(${bar[0]},${bar[1]},${bar[2]}, ${shadow - 0.5}), \
         // 6px -6px 0px rgb(${bar[0]},${bar[1]},${bar[2]}, ${shadow - 0.6})`,
         boxShadow: `
-        1px -1px 0px 2px rgba(0, 0, 0, 0.4), \
-        2px -2px 0px 2px rgba(0, 0, 0, 0.4), \
-        3px -3px 0px 2px rgba(0, 0, 0, 0.4), \
-        4px -4px 0px 2px rgba(0, 0, 0, 0.4), \
-        5px -5px 0px 2px rgba(0, 0, 0, 0.4), \
-        6px -6px 0px 2px rgba(0, 0, 0, 0.4)`,
+        1px -1px 0px 2px rgba(0, 0, 0, 0.2), \
+        2px -2px 0px 2px rgba(0, 0, 0, 0.2), \
+        3px -3px 0px 2px rgba(0, 0, 0, 0.2), \
+        4px -4px 0px 2px rgba(0, 0, 0, 0.2), \
+        5px -5px 0px 2px rgba(0, 0, 0, 0.2), \
+        6px -6px 0px 2px rgba(0, 0, 0, 0.2)`,
         margin: "0 2px",
       }}
     ></div>
