@@ -5,6 +5,8 @@ This is a sorting visualizer that uses RGB values or size as the sorting conditi
 
 Adjustable sorting parameters include speed, batch size, color, and algorithm
 
+![COLORSORT](https://user-images.githubusercontent.com/41309544/161862807-2febe265-129d-410e-88f8-3460e1fc380c.gif)
+
 ## Available Sorting Algorithms
 
 - Bubble Sort
